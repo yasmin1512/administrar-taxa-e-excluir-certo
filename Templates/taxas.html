@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título da página -->
+    <title>Administrar - Taxas</title>
+
+    <!-- Ligação com o arquivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='taxas.css') }}">
+
+    <!-- Estilos da janela de confirmação -->
+    <style>
+        /* Fundo escuro atrás da janela */
+        .fundo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.15);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        /* Janela de confirmação */
+        .modal {
+            width: 100%;
+            max-width: 455px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Círculo do ícone de lixeira */
+        .icone-modal {
+            width: 100px;
+            height: 100px;
+            margin: -10px auto 28px;
+            border: 1px solid #1A67F5;
+            border-radius: 50%;
+            background-color: #D1E3FF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+        }
+
+        /* Título da janela */
+        .modal h2 {
+            color: #000000;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        /* Informações da taxa selecionada */
+        .informacao-taxa {
+            color: #7186AA;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        /* Área dos botões da janela */
+        .botoes-modal {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Botões da janela */
+        .botao-confirmar,
+        .botao-cancelar {
+            width: 143px;
+            padding: 9px;
+            border-radius: 9px;
+            font-size: 17px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        /* Botão de confirmar a exclusão */
+        .botao-confirmar {
+            background-color: #1A67F5;
+            color: #FFFFFF;
+            border: 1px solid #1A67F5;
+        }
+
+        /* Botão de cancelar */
+        .botao-cancelar {
+            background-color: #FFFFFF;
+            color: #1A67F5;
+            border: 1px solid #1A67F5;
+        }
+
+        /* Mensagem para leitores de tela */
+        .mensagem-vazia {
+            display: none;
+            background-color: #FFFFFF;
+            padding: 25px;
+            text-align: center;
+            color: #7186AA;
+        }
+
+        /* Ajustes da janela em telas pequenas */
+        @media (max-width: 500px) {
+            .modal {
+                padding: 25px 15px;
+            }
+
+            .modal h2 {
+                font-size: 20px;
+            }
+
+            .botao-confirmar,
+            .botao-cancelar {
+                width: 125px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Cabeçalho da página -->
+    <header>
+
+        <!-- Logo do CredMais -->
+        <div class="area-logo">
+            <img
+                class="logo"
+                src="{{ url_for('logo') }}"
+                alt="Logo CredMais"
+            >
+        </div>
+
+        <!-- Menu de navegação -->
+        <div class="menu">
+            <div class="item-menu">Dashboard</div>
+            <div class="item-menu">Perfil</div>
+            <div class="item-menu pagina-atual">Taxas</div>
+            <div class="item-menu">Simulação</div>
+            <div class="item-menu">Empréstimos</div>
+            <div class="item-menu">Movimentações</div>
+        </div>
+
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main>
+
+        <!-- Título e botão de cadastro -->
+        <div class="cabecalho-taxas">
+
+            <div class="titulo-pagina">
+
+                <!-- Ícone da página -->
+                <div class="icone-taxas">
+                    <img
+                        src="{{ url_for('icone_taxas') }}"
+                        alt="Ícone de taxas"
+                    >
+                </div>
+
+                <!-- Nome e descrição -->
+                <div class="texto-titulo">
+                    <h1>Administrar / Taxas</h1>
+                    <p>Administre suas taxas.</p>
+                </div>
+
+            </div>
+
+            <!-- Botão para cadastrar taxa -->
+            <button class="botao-cadastrar" type="button">
+                + Cadastrar taxa
+            </button>
+
+        </div>
+
+        <!-- Lista de taxas -->
+        <div class="lista-taxas">
+
+            <h2>Lista de Taxas</h2>
+
+            <!-- Cabeçalho da lista -->
+            <div class="linha-titulo">
+                <div>Ano/Exercício</div>
+                <div>Taxa mensal</div>
+                <div>Ações</div>
+            </div>
+
+            <!-- Taxa do ano de 2025 -->
+            <div class="linha-taxa">
+                <div>2025</div>
+                <div>2,00%</div>
+
+                <div class="botoes-acoes">
+                    <button class="botao-editar" type="button">Editar</button>
+                    <button class="botao-excluir" type="button">Excluir</button>
+                </div>
+            </div>
+
+            <!-- Taxa do ano de 2024 -->
+            <div class="linha-taxa">
+                <div>2024</div>
+                <div>2,50%</div>
+
+                <div class="botoes-acoes">
+                    <button class="botao-editar" type="button">Editar</button>
+                    <button class="botao-excluir" type="button">Excluir</button>
+                </div>
+            </div>
+
+            <!-- Taxa do ano de 2023 -->
+            <div class="linha-taxa">
+                <div>2023</div>
+                <div>3,00%</div>
+
+                <div class="botoes-acoes">
+                    <button class="botao-editar" type="button">Editar</button>
+                    <button class="botao-excluir" type="button">Excluir</button>
+                </div>
+            </div>
+
+            <!-- Mensagem exibida quando não houver taxas -->
+            <div class="mensagem-vazia">
+                Não há taxas cadastradas.
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Janela de confirmação de exclusão -->
+    <div class="fundo-modal" id="fundo-modal">
+
+        <div
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-modal"
+        >
+
+            <!-- Ícone de lixeira -->
+            <div class="icone-modal">
+                <img src="{{ url_for('static', filename='Uploads/icone_excluir.png') }}" alt="Ícone de excluir">
+            </div>
+
+            <!-- Pergunta de confirmação -->
+            <h2 id="titulo-modal">Deseja excluir esta taxa?</h2>
+
+            <!-- Dados da taxa selecionada -->
+            <p class="informacao-taxa" id="informacao-taxa">
+                Ano: 2025 | Taxa mensal: 2,00%
+            </p>
+
+            <!-- Botões da janela -->
+            <div class="botoes-modal">
+
+                <button
+                    class="botao-confirmar"
+                    id="botao-confirmar"
+                    type="button"
+                >
+                    Excluir
+                </button>
+
+                <button
+                    class="botao-cancelar"
+                    id="botao-cancelar"
+                    type="button"
+                >
+                    Cancelar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Código que controla a janela de exclusão -->
+    <script>
+
+        // Guarda a taxa que foi selecionada para exclusão
+        let taxaSelecionada = null;
+
+        // Busca os elementos da janela
+        const fundoModal = document.getElementById("fundo-modal");
+        const informacaoTaxa = document.getElementById("informacao-taxa");
+        const botaoConfirmar = document.getElementById("botao-confirmar");
+        const botaoCancelar = document.getElementById("botao-cancelar");
+
+        // Busca todos os botões de excluir
+        const botoesExcluir = document.querySelectorAll(".botao-excluir");
+
+        // Adiciona uma ação para cada botão de excluir
+        botoesExcluir.forEach(function(botao) {
+
+            botao.addEventListener("click", function() {
+
+                // Encontra a linha da taxa selecionada
+                taxaSelecionada = botao.closest(".linha-taxa");
+
+                // Pega o ano e a taxa mensal dessa linha
+                const ano = taxaSelecionada.children[0].textContent;
+                const taxa = taxaSelecionada.children[1].textContent;
+
+                // Mostra as informações na janela
+                informacaoTaxa.textContent =
+                    "Ano: " + ano + " | Taxa mensal: " + taxa;
+
+                // Abre a janela
+                fundoModal.style.display = "flex";
+
+                // Coloca o foco no botão de cancelar
+                botaoCancelar.focus();
+
+            });
+
+        });
+
+        // Fecha a janela sem excluir a taxa
+        function fecharModal() {
+            fundoModal.style.display = "none";
+            taxaSelecionada = null;
+        }
+
+        // Ação do botão cancelar
+        botaoCancelar.addEventListener("click", function() {
+            fecharModal();
+        });
+
+        // Confirma a exclusão da taxa selecionada
+        botaoConfirmar.addEventListener("click", function() {
+
+            // Confere se existe uma taxa selecionada
+            if (taxaSelecionada !== null) {
+
+                // Remove somente a linha escolhida
+                taxaSelecionada.remove();
+
+                // Mostra uma mensagem se não restarem taxas
+                const taxasRestantes =
+                    document.querySelectorAll(".linha-taxa");
+
+                if (taxasRestantes.length === 0) {
+                    document.querySelector(".mensagem-vazia").style.display =
+                        "block";
+                }
+
+                // Fecha a janela
+                fecharModal();
+
+            }
+
+        });
+
+        // Fecha a janela se clicar fora dela
+        fundoModal.addEventListener("click", function(evento) {
+
+            if (evento.target === fundoModal) {
+                fecharModal();
+            }
+
+        });
+
+        // Fecha a janela ao apertar a tecla Escape
+        document.addEventListener("keydown", function(evento) {
+
+            if (evento.key === "Escape") {
+                fecharModal();
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
+
